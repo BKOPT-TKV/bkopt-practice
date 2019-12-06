@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage[utf8]{vietnam}
+
+\begin{document}
+
+\textbf{Multicast Routing}
+
+\begin{itemize}
+	\item \textbf{Đặt vấn đề}: Trên mạng $G = (V, E)$, có $s \in V$ là điểm xuất phát. Cần broadcast một gói tin từ $s$ đến các \emph{node} còn lại.
+	\item \textbf{Các ràng buộc}:
+	\begin{itemize}
+		\item Với mỗi $e \in E$:
+		\begin{itemize}
+			\item $l(e)$ là thời gian truyền.
+			\item $c(e)$ là chi phí thuê kênh.
+		\end{itemize}
+		\item $X(e) = 1$ nếu $e$ được chọn để broadcast, ngược lại $X(e) = 0$.
+		\item $\max_{v \in V} Y(v) \leq L$, với $Y(v)$ là thời gian gói tin được truyền đến v.
+	\end{itemize}
+	\item \textbf{Mục tiêu}:
+	\begin{itemize}
+		\item $\min{\sum_{e \in E}^{} (c(e) * X(e))}$
+	\end{itemize}
+	\item \textbf{Mô hình MIP}:
+	\begin{itemize}
+		\item \textbf{Biến}:
+		\begin{itemize}
+			\item $X(u, v) = 1$, nếu $(u, v) \in E$ được chọn.
+			\item $Y(u)$ là thời điểm u nhận được gói tin.
+			\item $M = +\infty$
+		\end{itemize}
+		\item \textbf{Ràng buộc}:
+		\begin{itemize}
+			\item $\sum_{v \in V \\ {u}} X(u, v) = 1, \forall u \in V \\ {S}$
+			\item $Y(s) = 0$
+			\item $Y(u) + M * (X(v, u) - 1) \leq Y(v) - l(v, u), \forall u \in V \\ {s}$
+			\item $Y(u) - M * (X(v, u) - 1) \geq Y(v) + l(v, u), \forall u \in V \\ {s}$
+			\item $Y(u) \leq L, \forall u \in V$
+		\end{itemize}
+		\item \textbf{Hàm mục tiêu}:
+		\begin{itemize}
+			\item $\min{\sum_{(u, v) \in E}^{} X(u, v) * c(u, v)}$
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{Notes}:
+	\begin{itemize}
+		\item Các ràng buộc \emph{3} và \emph{4} tương đương với ràng buộc $X(v, u) = 1 => Y(u) = Y(s) + l(v, u)$
+	\end{itemize}
+\end{itemize}
+\end{document}
