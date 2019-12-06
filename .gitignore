@@ -1,2 +1,6 @@
 .metadata/
+.sublime-text-config/
+RemoteSystemsTempFiles/
 *.gz
+
+*.sublime-workspace

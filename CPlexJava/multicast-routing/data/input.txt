@@ -1,0 +1,11 @@
+
+
+
+
+
+
+
+
+###
+Line 1: n m s L
+next m-lines: u v l(u, v) c(u, v)

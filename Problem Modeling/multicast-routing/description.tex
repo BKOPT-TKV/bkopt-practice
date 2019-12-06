@@ -7,45 +7,66 @@
 \textbf{Multicast Routing}
 
 \begin{itemize}
-	\item \textbf{Đặt vấn đề}: Trên mạng $G = (V, E)$, có $s \in V$ là điểm xuất phát. Cần broadcast một gói tin từ $s$ đến các \emph{node} còn lại.
-	\item \textbf{Các ràng buộc}:
+	\item \textbf{Đặt vấn đề}:
 	\begin{itemize}
-		\item Với mỗi $e \in E$:
-		\begin{itemize}
-			\item $l(e)$ là thời gian truyền.
-			\item $c(e)$ là chi phí thuê kênh.
-		\end{itemize}
-		\item $X(e) = 1$ nếu $e$ được chọn để broadcast, ngược lại $X(e) = 0$.
-		\item $\max_{v \in V} Y(v) \leq L$, với $Y(v)$ là thời gian gói tin được truyền đến v.
+		\item Một mạng truyền tin gồm các nút mạng và các kênh truyền. Mỗi kênh truyền kết nối 2 nút mạng và cho phép truyền tin trực tiếp giữa 2 nút mạng đó theo 1 chiều. Mỗi nút mạng sau khi nhận được gói tin có thể truyền lại cho các nút mạng khác nếu có kênh truyền (đúng chiều) giữa chúng. Mỗi kênh truyền có tốc độ truyền (thể hiện bằng thời gian truyền) và chi phí thuê kênh khác nhau. Một nút mạng cần quảng bá một gói tin. Cần thuê một số kênh truyền để quảng bá gói tin đó trong thời gian quy định sao cho chi phí thuê là nhỏ nhất.
 	\end{itemize}
-	\item \textbf{Mục tiêu}:
+	\item \textbf{Mô hình chung}:
 	\begin{itemize}
-		\item $\min{\sum_{e \in E}^{} (c(e) * X(e))}$
+		\item Đồ thị có hướng $G = (V, E)$:
+		\begin{itemize}
+			\item $V$ là tập các nút của đồ thị, mỗi nút tương ứng với một nút mạng.
+			\item $E$ là tập các cạnh nối 2 nút của đồ thị, mỗi cạnh tương ứng với một kênh truyền. Mỗi cạnh $(u, v) \in E$:
+			\begin{itemize}
+				\item $l(u, v)$ là thời gian truyền tin.
+				\item $c(u, v)$ là chi phí thuê kênh.
+			\end{itemize}
+			\item $s \in V$ là nút tương ứng với nút cần quảng bá gói tin.
+		\end{itemize}
+		\item Các biến trung gian:
+		\begin{itemize}
+			\item $X(u, v)$ xác định kênh truyền $(u, v) \in E$ có được thuê hay không.
+			\item $Y(v)$ là thời gian nút $v \in V$ nhận được gói tin.
+		\end{itemize}
+		\item Ràng buộc:
+		\begin{itemize}
+			\item $\max_{v \in V} Y(v) \leq L$.
+		\end{itemize}
+		\item {Mục tiêu}:
+		\begin{itemize}
+			\item $\min{\sum_{(u, v) \in E}^{} (c(u, v) * X(u, v))}$
+		\end{itemize}
 	\end{itemize}
 	\item \textbf{Mô hình MIP}:
 	\begin{itemize}
-		\item \textbf{Biến}:
+		\item Hằng số:
 		\begin{itemize}
-			\item $X(u, v) = 1$, nếu $(u, v) \in E$ được chọn.
-			\item $Y(u)$ là thời điểm u nhận được gói tin.
+			\item $l(u, v)$ là thời gian truyền tin từ nút $u$ đến nút $v$. $l(u, v) = \infty$ nếu $(u, v) \not\in E$.
+			\item $c(u, v)$ là chi phí thuê kênh $(u, v)$. $c(u, v) = \infty$ nếu $(u, v) \not\in E$.
+			\item $s \in V$ là nút xuất phát.
 			\item $M = +\infty$
 		\end{itemize}
-		\item \textbf{Ràng buộc}:
+		\item Biến quyết định:
 		\begin{itemize}
-			\item $\sum_{v \in V \\ {u}} X(u, v) = 1, \forall u \in V \\ {S}$
+			\item $X(u, v) = 1$, nếu $(u, v) \in E$ được chọn, ngược lại $X(u, v) = 0$.
+			\item $Y(u)$ là thời điểm u nhận được gói tin.
+		\end{itemize}
+		\item Ràng buộc:
+		\begin{itemize}
+			\item $\sum_{v \in V \setminus \{u\}}^{} X(u, v) = 1, \forall u \in V \\ {s}$
 			\item $Y(s) = 0$
-			\item $Y(u) + M * (X(v, u) - 1) \leq Y(v) - l(v, u), \forall u \in V \\ {s}$
-			\item $Y(u) - M * (X(v, u) - 1) \geq Y(v) + l(v, u), \forall u \in V \\ {s}$
+			\item $Y(u) + M \times (X(v, u) - 1) \leq Y(v) - l(v, u), \forall u \in V \\ {s}$
+			\item $Y(u) - M \times (X(v, u) - 1) \geq Y(v) + l(v, u), \forall u \in V \\ {s}$
 			\item $Y(u) \leq L, \forall u \in V$
 		\end{itemize}
-		\item \textbf{Hàm mục tiêu}:
+		\item Hàm mục tiêu:
 		\begin{itemize}
 			\item $\min{\sum_{(u, v) \in E}^{} X(u, v) * c(u, v)}$
 		\end{itemize}
-	\end{itemize}
-	\item \textbf{Notes}:
-	\begin{itemize}
-		\item Các ràng buộc \emph{3} và \emph{4} tương đương với ràng buộc $X(v, u) = 1 => Y(u) = Y(s) + l(v, u)$
+		\item Chú thích:
+		\begin{itemize}
+			\item Các ràng buộc \emph{(3)} và \emph{(4)} tương đương với ràng buộc $X(v, u) = 1 => Y(u) = Y(s) + l(v, u)$
+		\end{itemize}
 	\end{itemize}
 \end{itemize}
 \end{document}
