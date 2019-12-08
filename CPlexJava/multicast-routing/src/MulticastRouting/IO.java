@@ -13,8 +13,7 @@ public class IO {
 			Scanner sc = new Scanner(inputFile);
 			graph.numVertex = sc.nextInt();
 			graph.numEdge = sc.nextInt();
-			
-			
+			sc.close();		
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
